@@ -1,3 +1,6 @@
 *.pyc
 /testproject/reports/
 /testproject/static/
+
+# PyCharm
+.idea
