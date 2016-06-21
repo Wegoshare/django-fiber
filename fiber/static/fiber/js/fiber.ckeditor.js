@@ -46,6 +46,12 @@ Fiber.remove_textarea = function(textarea) {
 	}
 };
 
+Fiber.update_textarea_instances = function() {
+	for ( instance in CKEDITOR.instances ) {
+		CKEDITOR.instances[instance].updateElement();
+	}
+};
+
 function extend_CKEditor() {
 
 	// fPageLink

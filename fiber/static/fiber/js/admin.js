@@ -518,6 +518,11 @@ var ChangeFormDialog = AdminFormDialog.extend({
 		this.admin_form.form.ajaxSubmit({
 			cache: false,
 			context: this,
+			beforeSerialize:function($form, options){
+					/* Before serialize */
+					Fiber.update_textarea_instances();
+					return true;
+			},
 			success: function(responseText, statusText, xhr, $form) {
 				var response_change_form = new ChangeForm({
 					url: this.admin_form.options.url
@@ -1300,6 +1305,7 @@ var AddContentItemFormDialog = ChangeContentItemFormDialog.extend({
 
 		this.after_action_success = $.proxy(function(responseText, statusText, xhr, $form) {
 			// find id of added content item
+			console.log(xhr);
 			var added_content_item_id = xhr.responseXML.URL.replace(/\/$/,'').split('/').pop();
 
 			if (added_content_item_id) {
@@ -1588,6 +1594,15 @@ var adminPage = {
 
 		if (node.add_url) {
 			contextmenu.append(
+				$('<li><a href="#">'+gettext('Add new page')+'</a></li>').click($.proxy(function() {
+					var add_page_form_dialog = new ChangePageFormDialog({
+						url: node.add_url,
+						below_page_id: null
+					});
+				}, this))
+			);
+
+			contextmenu.append(
 				$('<li><a href="#">'+gettext('Add sub page')+'</a></li>').click($.proxy(function() {
 					var add_page_form_dialog = new ChangePageFormDialog({
 						url: node.add_url,
@@ -1597,69 +1612,67 @@ var adminPage = {
 			);
 		};
 
-		if (node.change_url) {
-			contextmenu.append(
-				$('<li><a href="#">'+gettext('Delete')+'</a></li>').click($.proxy(function() {
+		contextmenu.append(
+			$('<li><a href="#">'+gettext('Delete')+'</a></li>').click($.proxy(function() {
 
-					// show a confirmation dialog, that also warns about sub pages that will be removed
-					var confirmation_dialog = $('<div class="dialog"></div>').dialog({
-						modal: true,
-						resizable: false,
-						width: 400,
-						position: ['center', 40],
-						buttons: {
-							'Delete': {
-								text: gettext('Delete'),
-								click: function() {
-									$this = $(this);
-									$this.dialog('close');
+				// show a confirmation dialog, that also warns about sub pages that will be removed
+				var confirmation_dialog = $('<div class="dialog"></div>').dialog({
+					modal: true,
+					resizable: false,
+					width: 400,
+					position: ['center', 40],
+					buttons: {
+						'Delete': {
+							text: gettext('Delete'),
+							click: function() {
+								$this = $(this);
+								$this.dialog('close');
 
-									busyIndicator.show();
+								busyIndicator.show();
 
-									$.ajax({
-										url: '/api/v2/pages/' + node.id + '/',
-										type: 'DELETE',
-										data: {},
-										success: function(data) {
-											// when successful, reload the current page
-											reloadPage({
-												error: function() {
-													// If page reload fails, because current page is deleted, then
-													// go to the parent of the deleted page.
-													reloadPage({
-														id: node.parent.id
-													});
-												}
-											});
-										}
-									});
-								}
-							},
-							'Cancel': {
-								text: gettext('Cancel'),
-								click: function() {
-									$this = $(this);
-									$this.dialog('close');
-								}
+								$.ajax({
+									url: '/api/v2/pages/' + node.id + '/',
+									type: 'DELETE',
+									data: {},
+									success: function(data) {
+										// when successful, reload the current page
+										reloadPage({
+											error: function() {
+												// If page reload fails, because current page is deleted, then
+												// go to the parent of the deleted page.
+												reloadPage({
+													id: node.parent.id
+												});
+											}
+										});
+									}
+								});
+							}
+						},
+						'Cancel': {
+							text: gettext('Cancel'),
+							click: function() {
+								$this = $(this);
+								$this.dialog('close');
 							}
 						}
-					});
-
-					var confirmation_text = interpolate(gettext('<p>Are you sure you want to delete the page "<strong>%s</strong>"?</p>'), [$.trim(node.name)]);
-					var num_sub_pages = node.children.length;
-					if (num_sub_pages) {
-						if (num_sub_pages == 1) {
-							confirmation_text += interpolate(gettext('<p>There is <strong>%s page</strong> below this page that will also be deleted.</p>'), [num_sub_pages]);
-						} else {
-							confirmation_text += interpolate(gettext('<p>There are <strong>%s pages</strong> below this page that will also be deleted.</p>'), [num_sub_pages]);
-						}
 					}
+				});
 
-					confirmation_dialog.dialog('option', 'title', gettext('Are you sure?'));
-					confirmation_dialog.html(confirmation_text);
-				}, this))
-			);
-		};
+				var confirmation_text = interpolate(gettext('<p>Are you sure you want to delete the page "<strong>%s</strong>"?</p>'), [$.trim(node.name)]);
+				var num_sub_pages = node.children.length;
+				if (num_sub_pages) {
+					if (num_sub_pages == 1) {
+						confirmation_text += interpolate(gettext('<p>There is <strong>%s page</strong> below this page that will also be deleted.</p>'), [num_sub_pages]);
+					} else {
+						confirmation_text += interpolate(gettext('<p>There are <strong>%s pages</strong> below this page that will also be deleted.</p>'), [num_sub_pages]);
+					}
+				}
+
+				confirmation_dialog.dialog('option', 'title', gettext('Are you sure?'));
+				confirmation_dialog.html(confirmation_text);
+			}, this))
+		);
 
 		contextmenu.menu().removeClass('ui-corner-all');
 		$(document.body).append(contextmenu);
