@@ -592,7 +592,7 @@ var ChangeForm = AdminForm.extend({
 		// TODO: add Django-like behavior:
 		// - fieldsets should be split into tabs
 		// - collapsible areas should work, etc.
-		enhance_textareas(this.form, true);
+		enhance_textareas(this.form, false);
 		enhance_comboboxes(this.form);
 		enhance_jsontextareas(this.form);
 		enhance_content_template_select(this.form);
@@ -2278,17 +2278,19 @@ Fiber.FiberItem = Class.extend({
 
 	// TODO: move to page specific class (remove / delete)
 	remove_from_page: function() {
-		busyIndicator.show();
-		adminPage.hide_admin_elements();
+		if (confirm(gettext('Are you sure?')) == true) {
+			busyIndicator.show();
+			adminPage.hide_admin_elements();
 
-		$.ajax({
-			url: '/api/v2/page_content_items/' + this.element_data.page_content_item_id + '/',
-			type: 'DELETE',
-			data: {},
-			success: function(data) {
-				reloadPage();
-			}
-		});
+			$.ajax({
+				url: '/api/v2/page_content_items/' + this.element_data.page_content_item_id + '/',
+				type: 'DELETE',
+				data: {},
+				success: function (data) {
+					reloadPage();
+				}
+			});
+		}
 	},
 
 	edit_item: function () {
