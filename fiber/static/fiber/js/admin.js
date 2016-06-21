@@ -182,16 +182,18 @@ var AdminDialog = Class.extend({
 
 		this.uiDialog.dialog('option', 'buttons', {
 			'Action': {
-				text: 'Action', // TODO: dynamically fill in action
-				click: $.proxy(function() {
-					this.action_click();
-				}, this)
+							html: '<span class="ui-button-text">Action</span>', // TODO: dynamically fill in action
+							class: 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only',
+							click: $.proxy(function() {
+											this.action_click();
+							}, this)
 			},
 			'Cancel': {
-				text: gettext('Cancel'),
-				click: $.proxy(function() {
-					this.cancel_click();
-				}, this)
+							class: 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only',
+							html: '<span class="ui-button-text">'+ gettext('Cancel') +'</span>',
+							click: $.proxy(function() {
+											this.cancel_click();
+							}, this)
 			}
 		});
 
@@ -502,6 +504,8 @@ var ChangeFormDialog = AdminFormDialog.extend({
 			this.redraw();
 		}, this);
 		this.admin_form.load();
+
+		this.uiDialog.dialog('option', 'title', gettext('Change'));
 
 		// TODO: is this the correct place for this?
 		var action_button = this.uiDialog.parent().find(':button:contains("Action")');
