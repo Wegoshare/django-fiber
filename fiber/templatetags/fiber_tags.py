@@ -171,7 +171,7 @@ def show_content(context, content_item_name):
 
 
 @register.inclusion_tag('fiber/content_items.html', takes_context=True)
-def show_page_content(context, page_or_block_name, block_name=None):
+def show_page_content(context, page_or_block_name, block_name=None, can_delete=False):
     """
     Fetch and render named content items for the current fiber page, or a given fiber page.
 
@@ -206,7 +206,8 @@ def show_page_content(context, page_or_block_name, block_name=None):
             'fiber_page': page,
             'ContentItem': ContentItem,
             'fiber_block_name': block_name,
-            'fiber_content_items': content_items
+            'fiber_content_items': content_items,
+            'can_delete': can_delete
         })
         return context
 

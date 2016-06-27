@@ -505,7 +505,7 @@ var ChangeFormDialog = AdminFormDialog.extend({
 		}, this);
 		this.admin_form.load();
 
-		this.uiDialog.dialog('option', 'title', gettext('Change'));
+		this.uiDialog.dialog('option', 'title', gettext('Change Form'));
 
 		// TODO: is this the correct place for this?
 		var action_button = this.uiDialog.parent().find(':button:contains("Action")');
@@ -732,7 +732,7 @@ var BaseFileSelectDialog = AdminRESTDialog.extend({
 
 		this.select_grid.bind('datagrid.select', function(e) {
 			if (e.row.can_edit){
-				delete_button.attr('disabled', '');
+				delete_button.removeAttr('disabled');
 				delete_button.removeClass('ui-button-disabled ui-state-disabled');
 			}
 			else if (!delete_button.hasClass('ui-button-disabled ui-state-disabled')){
@@ -743,6 +743,9 @@ var BaseFileSelectDialog = AdminRESTDialog.extend({
 		var self = this;
 
 		delete_button.bind('click', function() {
+			if (self.select_grid.simple_datagrid('getSelectedRow') == null){
+				return false;
+			}
 			var url = self.select_grid.simple_datagrid('getSelectedRow').url;
 
 			$.ajax({
@@ -831,7 +834,7 @@ Fiber.ImageSelectDialog = BaseFileSelectDialog.extend({
 		});
 
 		this.select_grid.bind('datagrid.select', function() {
-			action_button.attr('disabled', '');
+			action_button.removeAttr('disabled');
 			action_button.removeClass('ui-button-disabled ui-state-disabled');
 		});
 
@@ -890,6 +893,7 @@ Fiber.FileSelectDialog = BaseFileSelectDialog.extend({
 	},
 
 	init_dialog_success: function(data) {
+		console.log('select');
 		var action_button = this.uiDialog.parent().find('#action-button');
 		var search = '';
 		var self = this;
@@ -911,7 +915,7 @@ Fiber.FileSelectDialog = BaseFileSelectDialog.extend({
 			sortorder: 'desc'
 		});
 		this.select_grid.bind('datagrid.select', function() {
-			action_button.attr('disabled', '');
+			action_button.removeAttr('disabled');
 			action_button.removeClass('ui-button-disabled ui-state-disabled');
 		});
 
@@ -1305,8 +1309,10 @@ var AddContentItemFormDialog = ChangeContentItemFormDialog.extend({
 
 		this.after_action_success = $.proxy(function(responseText, statusText, xhr, $form) {
 			// find id of added content item
-			console.log(xhr);
-			var added_content_item_id = xhr.responseXML.URL.replace(/\/$/,'').split('/').pop();
+
+			var splitted_url = $(responseText).find('a.deletelink').attr('href').replace(/\/$/,'').split('/');
+			//var added_content_item_id = xhr.responseXML.URL.replace(/\/$/,'').split('/').pop();
+			var added_content_item_id = splitted_url[splitted_url.length - 2];
 
 			if (added_content_item_id) {
 				this.add_content_item(added_content_item_id);
@@ -2255,11 +2261,13 @@ Fiber.FiberItem = Class.extend({
 			);
 
 			if (this.element_data.page_content_item_id) {
-				contextmenu.append(
-					$('<li><a href="#">' + gettext('Remove from page') + '</a></li>').click(
-						$.proxy(this.remove_from_page, this)
-					)
-				);
+				if (this.element_data.can_delete) {
+					contextmenu.append(
+						$('<li><a href="#">' + gettext('Remove from page') + '</a></li>').click(
+							$.proxy(this.remove_from_page, this)
+						)
+					);
+				}
 				if (this.element_data.used_on_pages && this.element_data.used_on_pages.length > 1) {
 					var context_submenu_used_on_pages = $('<ul class="ui-context-menu"></ul>');
 					$(this.element_data.used_on_pages).each(function (index, value) {
