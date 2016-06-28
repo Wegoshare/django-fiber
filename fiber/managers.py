@@ -235,6 +235,10 @@ class PageManager(TreeManager):
             )
 
             url = page.get_absolute_url()
+
+            if not url and page.redirect_page:
+                url = page.redirect_page.get_absolute_url()
+
             if url:
                 # normal pages
                 page_info['url'] = url

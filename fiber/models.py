@@ -122,7 +122,7 @@ class Page(MPTTModel):
     def get_absolute_url(self):
         if self.url == '':
             return ''
-        if self.url.startswith('/'):
+        if self.url.startswith('/') or self.url.startswith('?'):
             return self.url
         elif self.url.startswith('http://') or self.url.startswith('https://'):
             return self.url

@@ -12,10 +12,11 @@ Fiber.enhance_textarea = function(textarea, auto_height) {
 		['Format'],
 		window.CKEDITOR_CONFIG_STYLES_SET ? ['Styles'] : '-',
 		['Bold','Italic'],
+		[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ],
 		['NumberedList','BulletedList','Outdent','Indent'],
 		['fPageLink','fFileLink','fImageLink','fCustomLink','fUnlink'],
 		['fImage','Table'],
-		['PasteText','PasteFromWord','RemoveFormat'],
+		['RemoveFormat'],
 		['Maximize'],
 		['Source']
 	];

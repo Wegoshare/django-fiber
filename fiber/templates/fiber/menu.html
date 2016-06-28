@@ -40,7 +40,7 @@
                     "type": "page",
                     "add_url": "{{ Page.get_add_url }}",
                     "parent_id": {{ node.id }}
-                }'{% endif %}>
+                }'{% endif %} class="sub-menu">
 
                     {{ children }}
 
@@ -70,7 +70,7 @@
 
             {% if children %}
 
-                <ul>
+                <ul class="sub-menu">
 
                     {{ children }}
 

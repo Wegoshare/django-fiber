@@ -813,6 +813,14 @@ ul.jqtree-tree .jqtree-moving > div .jqtree-title {
 #ui-image-select-grid img {
 	width: 111px;
 }
+#ui-image-select-grid tfoot{
+	background: transparent;
+}
+#ui-image-select-grid tfoot .pagination {
+	background: transparent;
+	padding: 0;
+    margin: 8px 0;
+}
 
 .simple-data-grid thead th a .sort {
 	top: 4px;
