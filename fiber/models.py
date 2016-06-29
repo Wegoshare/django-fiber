@@ -121,6 +121,8 @@ class Page(MPTTModel):
 
     def get_absolute_url(self):
         if self.url == '':
+            if self.redirect_page:
+                return self.redirect_page.get_absolute_url()
             return ''
         if self.url.startswith('/') or self.url.startswith('?'):
             return self.url
