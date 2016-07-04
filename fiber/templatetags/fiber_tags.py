@@ -64,7 +64,8 @@ class MenuHelper(object):
         try:
             return Page.objects.get(title=self.menu_name, parent=None)
         except Page.DoesNotExist:
-            raise Page.DoesNotExist("Menu does not exist.\nNo top-level page found with the title '%s'." % self.menu_name)
+            return None
+            #raise Page.DoesNotExist("Menu does not exist.\nNo top-level page found with the title '%s'." % self.menu_name)
 
     def get_tree(self, root):
         """
@@ -120,6 +121,9 @@ class MenuHelper(object):
         Get the menu tree
         """
         root = self.get_root()
+        if not root:
+            return
+
         current = self.context.get('fiber_page')
         if self.expand == 'all':
             # Unfiltered sitemap like tree
