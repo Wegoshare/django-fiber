@@ -752,6 +752,9 @@ var BaseFileSelectDialog = AdminRESTDialog.extend({
 			}
 			var url = self.select_grid.simple_datagrid('getSelectedRow').url;
 
+			// remove http from url to support https
+			url = "//" + url.replace(/.*?:\/\//g, "");
+
 			$.ajax({
 				url: url,
 				type: 'DELETE',
