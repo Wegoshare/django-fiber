@@ -394,7 +394,7 @@ var AdminForm = Class.extend({
 var LoginFormDialog = AdminFormDialog.extend({
 
 	defaults: {
-		url: BACKEND_BASE_URL,
+		url: LOGIN_PAGE_URL,
 		width: 250,
 		height: 'auto',
 		start_width: 250
@@ -524,6 +524,10 @@ var ChangeFormDialog = AdminFormDialog.extend({
 					return true;
 			},
 			success: function(responseText, statusText, xhr, $form) {
+				if (xhr.status == 278) {
+					window.location.reload();
+				}
+
 				var response_change_form = new ChangeForm({
 					url: this.admin_form.options.url
 				});

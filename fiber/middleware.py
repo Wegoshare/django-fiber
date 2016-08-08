@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.utils.encoding import smart_text
 from django.utils.html import escape
+from django.http import HttpResponseRedirect
 
 from fiber.app_settings import LOGIN_STRING, EXCLUDE_URLS, EDITOR, PERMISSION_CLASS
 from fiber.models import ContentItem, Page
@@ -131,6 +132,7 @@ class AdminPageMiddleware(object):
             'editor_template_js': self.editor_settings.get('template_js'),
             'editor_template_css': self.editor_settings.get('template_css'),
             'BACKEND_BASE_URL': reverse('admin:index'),
+            'LOGIN_PAGE_URL': reverse('admin:login'),
             'FIBER_LOGIN_URL': reverse('fiber_login'),
         }
         return loader.render_to_string('fiber/header.html', context, RequestContext(request))
@@ -163,3 +165,12 @@ class ObfuscateEmailAddressMiddleware(object):
         for char in matches.group(0):
             encoded_char_list.append(random.choice(['&#%d;' % ord(char), '&#x%x;' % ord(char)]))
         return ''.join(encoded_char_list)
+
+
+# http://hunterford.me/how-to-handle-http-redirects-with-jquery-and-django/
+class AjaxRedirect(object):
+    def process_response(self, request, response):
+        if request.is_ajax():
+            if type(response) == HttpResponseRedirect:
+                response.status_code = 278
+        return response
