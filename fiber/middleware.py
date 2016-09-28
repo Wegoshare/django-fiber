@@ -3,7 +3,7 @@ import re
 import json
 from urllib import unquote
 
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.http import HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.utils.encoding import smart_text
@@ -170,7 +170,13 @@ class ObfuscateEmailAddressMiddleware(object):
 # http://hunterford.me/how-to-handle-http-redirects-with-jquery-and-django/
 class AjaxRedirect(object):
     def process_response(self, request, response):
+
+        ajax_redirect_except = [
+            'fiber_contentitem_add'
+        ]
         if request.is_ajax():
-            if type(response) == HttpResponseRedirect:
+            url_name = resolve(request.path_info).url_name
+            if type(response) == HttpResponseRedirect and url_name not in ajax_redirect_except:
                 response.status_code = 278
+
         return response
