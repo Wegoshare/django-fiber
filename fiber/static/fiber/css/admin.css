@@ -239,6 +239,7 @@ li.hidden-in-menu {
 
 .ui-dialog .ui-dialog-content {
 	padding: 0;
+	overflow: hidden;
 }
 
 div.ui-dialog form {

@@ -10,6 +10,7 @@
                 <div data-fiber-data='{
                     "can_edit": true,
                     "can_delete": {{can_delete|yesno:"true,false"}},
+                    "can_add": {{can_add|yesno:"true,false"}},
                     "type": "content_item",
                     "id": {{ content_item.id }},
                     "url": "{{ content_item.get_change_url }}",
@@ -24,6 +25,7 @@
 
                 <div data-fiber-data='{
                     "can_edit": true,
+                    "can_add": {{can_add|yesno:"true,false"}},
                     "type": "content_item",
                     "id": {{ content_item.id }},
                     "url": "{{ content_item.get_change_url }}",
@@ -38,6 +40,7 @@
 
             <div data-fiber-data='{
                 "can_edit": true,
+                "can_add": {{can_add|yesno:"true,false"}},
                 "type": "content_item",
                 "id": {{ content_item.id }},
                 "url": "{{ content_item.get_change_url }}"

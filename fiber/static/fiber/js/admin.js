@@ -153,7 +153,7 @@ var AdminDialog = Class.extend({
 	// default options
 	defaults: {
 		url: null,
-		width: 764,
+		width: 800,
 		height: 'auto',
 		start_width: 764,
 		start_height: 480
@@ -1987,7 +1987,9 @@ Fiber.FiberItem = Class.extend({
 		if (!this.button) {
 			this.create_button();
 		}
-		this.button.show();
+		if (this.element_data.can_add) {
+			this.button.show();
+		}
 	},
 
 	show_admin_elements: function() {

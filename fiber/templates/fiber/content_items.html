@@ -4,6 +4,7 @@
 
 <div data-fiber-data='{
     "can_edit":true,
+    "can_add": {{can_add|yesno:"true,false"}},
     "type": "content_item",
     "add_url": "{{ ContentItem.get_add_url }}",
     "page_id": {{ fiber_page.id}},

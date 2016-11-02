@@ -11,15 +11,17 @@ Fiber.enhance_textarea = function(textarea, auto_height) {
 	window.CKEDITOR_CONFIG_TOOLBAR = window.CKEDITOR_CONFIG_TOOLBAR || [
 		['Format'],
 		window.CKEDITOR_CONFIG_STYLES_SET ? ['Styles'] : '-',
-		['Bold','Italic'],
+		['Bold','Italic', 'Strike'],
 		[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ],
 		['NumberedList','BulletedList','Outdent','Indent'],
 		['fPageLink','fFileLink','fImageLink','fCustomLink','fUnlink'],
-		['fImage','Table'],
+		['fImage','Table', 'HorizontalRule'],
 		['RemoveFormat'],
 		['Maximize'],
 		['Source']
 	];
+
+	CKEDITOR.config.coreStyles_italic = { element : 'i', overrides : 'em' };
 
 	if (auto_height) {
 		CKEDITOR.config.height = window.innerHeight - (($('.ui-dialog').height() - $(textarea).height()) + 140);
