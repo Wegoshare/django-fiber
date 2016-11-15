@@ -69,6 +69,9 @@ class AdminPageMiddleware(object):
         - is NOT performed by an admin user
         - has session key self.LOGIN_SESSION_KEY = True
         """
+        if not hasattr(request, 'user'):
+            return True
+
         return not request.user.is_staff and request.session.get(self.LOGIN_SESSION_KEY)
 
     def show_admin(self, request, response):
