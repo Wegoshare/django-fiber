@@ -6,6 +6,7 @@ from django import template
 from django.contrib.auth.models import AnonymousUser
 from django.template import TemplateSyntaxError
 from django.utils.html import escape
+from django.conf import settings
 
 import fiber
 from fiber.models import Page, ContentItem
@@ -196,6 +197,9 @@ def show_page_content(context, page_or_block_name, block_name=None, can_delete=F
     else:
         # Bad arguments
         raise TemplateSyntaxError("'show_page_content' received invalid arguments")
+
+    if settings.DEBUG is True:
+        can_add = True
 
     if page and block_name:
         page_content_items = page.page_content_items.filter(block_name=block_name).order_by('sort').select_related('content_item')
