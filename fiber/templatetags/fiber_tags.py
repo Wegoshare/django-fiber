@@ -200,6 +200,7 @@ def show_page_content(context, page_or_block_name, block_name=None, can_delete=F
 
     if settings.DEBUG is True:
         can_add = True
+        can_delete = True
 
     if page and block_name:
         page_content_items = page.page_content_items.filter(block_name=block_name).order_by('sort').select_related('content_item')
