@@ -1,0 +1,47 @@
+{% load fiber_tags i18n %}
+
+{% if fiber_page %}
+
+    {% if fiber_page|can_edit:user %}
+    <button id="add_sub_page" page-id="{{fiber_page.id}}"
+            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+            add-url="{{fiber_page.get_add_url}}"><span class="ui-button-text">{% trans "Add New" %}</span></button>
+    {% endif %}
+
+    <div class="page-tree">
+        {% for page in pages %}
+            <div class="page-details">
+                <div class="page-title">
+                    <a href="{{page.get_absolute_url}}">{{page.title}}</a>
+                </div>
+                <div class="page-excerpt">
+                    {{ page|page_excerpt|safe|truncatewords:80}}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if pages.has_other_pages %}
+      <ul class="page-tree-pagination">
+        {% if pages.has_previous %}
+          <li><a href="?page={{ pages.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in pages.paginator.page_range %}
+          {% if pages.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if pages.has_next %}
+          <li><a href="?page={{ pages.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+
+{% endif %}
+
