@@ -7,6 +7,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.template import TemplateSyntaxError
 from django.utils.html import escape
 from django.conf import settings
+from django.core.paginator import Paginator
 
 import fiber
 from fiber.models import Page, ContentItem
@@ -220,6 +221,44 @@ def show_page_content(context, page_or_block_name, block_name=None, can_delete=F
             'can_add': can_add,
         })
         return context
+
+
+@register.inclusion_tag('fiber/page_tree.html', takes_context=True)
+def show_page_tree(context):
+    request = context['request']
+
+    page_number = request.GET.get('page', 1)
+    items_per_page = 10
+
+    page = context['fiber_page']
+    page_childrens = page.get_children()
+    paginator = Paginator(page_childrens, items_per_page)
+    page_childrens = paginator.page(page_number)
+
+    return {
+        'fiber_page': page,
+        'user': context['user'],
+        'pages': page_childrens
+    }
+
+
+@register.simple_tag(takes_context=True)
+def page_created_at(context, format='%d-%m-%Y %H:%M:%S'):
+    page = context['fiber_page']
+
+    return page.created.strftime(format)
+
+
+@register.filter
+def page_excerpt(page):
+
+    page_content_items = page.page_content_items.order_by('sort').select_related('content_item')
+    page_content = ''
+    for page_content_item in page_content_items:
+        content_item = page_content_item.content_item
+        page_content += content_item.content_html
+
+    return page_content
 
 
 @register.tag(name='captureas')

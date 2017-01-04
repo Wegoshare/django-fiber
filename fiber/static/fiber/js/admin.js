@@ -658,10 +658,10 @@ var BaseFileSelectDialog = AdminRESTDialog.extend({
 				'id': 'upload-buttonpane'
 			});
 
-		var upload_button = $('<a>' + gettext('Upload a new file') + '</a>')
+		var upload_button = $('<button type="button"><span class="ui-button-text">' + gettext('Upload a new file') + '</span></button>')
 			.appendTo(upload_button_pane)
 			.attr({
-				'class': 'upload',
+				'class': 'upload ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only',
 				'id': 'upload-file-button'
 			})
 			.button({
@@ -711,10 +711,10 @@ var BaseFileSelectDialog = AdminRESTDialog.extend({
 				'id': 'delete-buttonpane'
 			});
 
-		var delete_button = $('<button type="button">' + gettext('Delete') + '</button>')
+		var delete_button = $('<button type="button"><span class="ui-button-text">' + gettext('Delete') + '</span></button>')
 			.appendTo(delete_button_pane)
 			.attr({
-				'class': 'delete',
+				'class': 'delete ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only',
 				'id': 'delete-file-button'
 			})
 			.button({
@@ -2351,6 +2351,16 @@ Fiber.FiberItem = Class.extend({
 			});
 		}
 	}
+});
+
+
+$(function(){
+	$('#add_sub_page').click(function() {
+	    var add_page_form_dialog = new ChangePageFormDialog({
+	        url: $(this).attr('add-url'),
+	        below_page_id: $(this).attr('page-id')
+	    });
+	});
 });
 
 

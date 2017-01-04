@@ -15,8 +15,7 @@ Fiber.enhance_textarea = function(textarea, auto_height) {
 		[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ],
 		['NumberedList','BulletedList','Outdent','Indent'],
 		['fPageLink','fFileLink','fImageLink','fCustomLink','fUnlink'],
-		['fImage','Table', 'HorizontalRule'],
-		['RemoveFormat'],
+		['Image','fImage','Table', 'HorizontalRule'],
 		['Maximize'],
 		['Source']
 	];
@@ -28,10 +27,10 @@ Fiber.enhance_textarea = function(textarea, auto_height) {
 	}
 
 	CKEDITOR.replace(textarea, {
-		skin: 'moono',
+		skin: 'moono-lisa',
 		language: LANGUAGE_CODE,
-		extraPlugins: window.CKEDITOR_CONFIG_EXTRA_PLUGINS || 'fpagelink,ffilelink,fimagelink,fcustomlink,funlink,fimage,table,tabletools',
-		removePlugins: window.CKEDITOR_CONFIG_REMOVE_PLUGINS || 'scayt,language,menubutton,forms,image,link',
+		extraPlugins: window.CKEDITOR_CONFIG_EXTRA_PLUGINS || 'fpagelink,ffilelink,fimagelink,fcustomlink,funlink,fimage,table,tabletools,image',
+		removePlugins: window.CKEDITOR_CONFIG_REMOVE_PLUGINS || 'scayt,language,menubutton,forms,link',
 		allowedContent: window.CKEDITOR_CONFIG_ALLOWED_CONTENT || false,
 		extraAllowedContent: window.CKEDITOR_CONFIG_EXTRA_ALLOWED_CONTENT || 'a[*]{*}(*);img[*]{*}(*);iframe[*];object[*];param[*];embed[*]',
 		toolbar: window.CKEDITOR_CONFIG_TOOLBAR,
@@ -266,7 +265,7 @@ function extend_CKEditor() {
 		init: function(editor) {
 			editor.addCommand('fimage', fimageCmd);
 			editor.ui.addButton('fImage', {
-				label: gettext('Image'),
+				label: gettext('Image from Site'),
 				command: 'fimage'
 			});
 		}
