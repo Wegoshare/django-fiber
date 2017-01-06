@@ -524,25 +524,23 @@ var ChangeFormDialog = AdminFormDialog.extend({
 					return true;
 			},
 			success: function(responseText, statusText, xhr, $form) {
-				if (xhr.status == 278) {
-					window.location.reload();
-				}
-
 				var response_change_form = new ChangeForm({
 					url: this.admin_form.options.url
 				});
 
 				response_change_form.get_form_from_HTML(responseText);
 
-				if (response_change_form.form.find('p.errornote').length) {
-					this.admin_form.destroy();
-					this.admin_form = response_change_form;
+				if (response_change_form.form) {
+					if (response_change_form.form.find('p.errornote').length){
+						this.admin_form.destroy();
+						this.admin_form = response_change_form;
 
-					this.admin_form.set_form_action();
-					this.admin_form.set_styling();
-					this.append_form();
-					this.admin_form.set_interaction();
-					busyIndicator.hide();
+						this.admin_form.set_form_action();
+						this.admin_form.set_styling();
+						this.append_form();
+						this.admin_form.set_interaction();
+						busyIndicator.hide();
+					}
 				} else {
 					this.after_action_success(responseText, statusText, xhr, $form);
 				}
@@ -1317,9 +1315,8 @@ var AddContentItemFormDialog = ChangeContentItemFormDialog.extend({
 		this.after_action_success = $.proxy(function(responseText, statusText, xhr, $form) {
 			// find id of added content item
 
-			var splitted_url = $(responseText).find('a.deletelink').attr('href').replace(/\/$/,'').split('/');
-			//var added_content_item_id = xhr.responseXML.URL.replace(/\/$/,'').split('/').pop();
-			var added_content_item_id = splitted_url[splitted_url.length - 2];
+			var splitted_url = responseText.replace(/\/$/,'').split('/');
+			var added_content_item_id = splitted_url[splitted_url.length - 1];
 
 			if (added_content_item_id) {
 				this.add_content_item(added_content_item_id);

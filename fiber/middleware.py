@@ -174,12 +174,10 @@ class ObfuscateEmailAddressMiddleware(object):
 class AjaxRedirect(object):
     def process_response(self, request, response):
 
-        ajax_redirect_except = [
-            'fiber_contentitem_add'
-        ]
-        if request.is_ajax():
-            url_name = resolve(request.path_info).url_name
-            if type(response) == HttpResponseRedirect and url_name not in ajax_redirect_except:
-                response.status_code = 278
+        if request.is_ajax() and type(response) == HttpResponseRedirect:
+            response.status_code = 200
+            if 'location' in response._headers:
+                location = list(response._headers['location'])
+                response.content = location[1]
 
         return response
