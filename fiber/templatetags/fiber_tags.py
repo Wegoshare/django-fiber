@@ -8,6 +8,7 @@ from django.template import TemplateSyntaxError
 from django.utils.html import escape
 from django.conf import settings
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 import fiber
 from fiber.models import Page, ContentItem
@@ -63,11 +64,11 @@ class MenuHelper(object):
         """
         Get the root page for this menu
         """
-        try:
-            return Page.objects.get(title=self.menu_name, parent=None)
-        except Page.DoesNotExist:
+        page = Page.objects.filter(Q(title=self.menu_name, parent=None) | Q(url=self.menu_name, parent=None))
+        if len(page) == 0:
             return None
-            #raise Page.DoesNotExist("Menu does not exist.\nNo top-level page found with the title '%s'." % self.menu_name)
+
+        return page[0]
 
     def get_tree(self, root):
         """
