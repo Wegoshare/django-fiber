@@ -605,13 +605,17 @@ var ChangeForm = AdminForm.extend({
 		enhance_jsontextareas(this.form);
 		enhance_content_template_select(this.form);
 
-		this.form.find('label').on('click', function(){
-			var content_text_id = '#cke_'+ $(this).attr('for');
-			$(content_text_id).toggle();
-		});
-		setTimeout(function(){
-			self.form.find('label:not(:first)').click();
-		}, 500);
+		if(this.form.find('label').length > 1){
+			this.form.find('label').on('click', function(){
+				var content_text_id = '#cke_'+ $(this).attr('for');
+				$(content_text_id).toggle();
+			});
+			var current_lang_code = LANGUAGE_CODE.replace("-", "_");
+			var current_html_text = '[for=id_content_html_' + current_lang_code + ']';
+			setTimeout(function(){
+				self.form.find('label:not(' + current_html_text + ')').click();
+			}, 500);
+		}
 	},
 
 	destroy: function() {
