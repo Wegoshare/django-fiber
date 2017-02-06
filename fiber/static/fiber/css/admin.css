@@ -342,6 +342,10 @@ div.ui-dialog form p.help {
 	font-style: italic;
 }
 
+div.ui-dialog form label {
+    cursor: pointer;
+}
+
 div.ui-dialog form label.required {
 	font-weight: bold;
 }

@@ -599,10 +599,19 @@ var ChangeForm = AdminForm.extend({
 		// TODO: add Django-like behavior:
 		// - fieldsets should be split into tabs
 		// - collapsible areas should work, etc.
+		var self = this;
 		enhance_textareas(this.form, false);
 		enhance_comboboxes(this.form);
 		enhance_jsontextareas(this.form);
 		enhance_content_template_select(this.form);
+
+		this.form.find('label').on('click', function(){
+			var content_text_id = '#cke_'+ $(this).attr('for');
+			$(content_text_id).toggle();
+		});
+		setTimeout(function(){
+			self.form.find('label:not(:first)').click();
+		}, 500);
 	},
 
 	destroy: function() {
