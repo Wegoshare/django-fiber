@@ -1,25 +1,20 @@
 {% load fiber_tags %}
 {% if fiber_page %}
-{% if fiber_page|can_edit:user %}
+    {% if fiber_page|can_edit:user and fiber_content_items|length == 0%}
 
-<div data-fiber-data='{
-    "can_edit":true,
-    "can_add": {{can_add|yesno:"true,false"}},
-    "type": "content_item",
-    "add_url": "{{ ContentItem.get_add_url }}",
-    "page_id": {{ fiber_page.id}},
-    "block_name": "{{ fiber_block_name }}"
-}'>
+    <div data-fiber-data='{
+        "can_edit":true,
+        "can_add": {{can_add|yesno:"true,false"}},
+        "type": "content_item",
+        "add_url": "{{ ContentItem.get_add_url }}",
+        "page_id": {{ fiber_page.id}},
+        "block_name": "{{ fiber_block_name }}"
+    }' class="add-new-content-item"></div>
 
-{% else %}
-
-<div>
-
-{% endif %}
+    {% endif %}
 
     {% for content_item in fiber_content_items %}
         {% include 'fiber/content_item.html' %}
     {% endfor %}
 
-</div>
 {% endif %}

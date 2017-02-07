@@ -161,6 +161,10 @@ var AdminDialog = Class.extend({
 
 	// constructor
 	init: function(options) {
+		// for mobile views
+		if($(window).width() < 800){
+			this.defaults.width = $(window).width() - 50;
+		}
 		this.options = $.extend({}, this.defaults, options); // TODO: get dialog dimensions and behavior from options
 		this.create_dialog();
 		this.init_dialog();

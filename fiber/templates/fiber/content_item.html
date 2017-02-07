@@ -19,7 +19,7 @@
                     "block_name": "{{ fiber_block_name }}",
                     "page_content_item_id": {{ content_item.page_content_item.id }},
                     "used_on_pages": {{ content_item.get_used_on_pages_json }}
-                }' class="content">
+                }' class="{{ content_class }}">
 
             {% else %}
 
@@ -32,7 +32,7 @@
                     "add_url": "{{ ContentItem.get_add_url }}",
                     "page_id": {{ fiber_page.id }},
                     "block_name": "{{ fiber_block_name }}"
-                }' class="content">
+                }' class="{{ content_class }}">
 
             {% endif %}
 
@@ -44,13 +44,13 @@
                 "type": "content_item",
                 "id": {{ content_item.id }},
                 "url": "{{ content_item.get_change_url }}"
-            }' class="content">
+            }' class="{{ content_class }}">
 
         {% endif %}
 
     {% else %}
 
-        <div class="content">
+        <div class="{{ content_class }}">
 
     {% endif %}
 
