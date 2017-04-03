@@ -167,7 +167,7 @@ div.ui-dialog form label,
 }
 
 body [data-fiber-data*='"url":']:hover {
-	box-shadow: 0 0 15px 5px rgba(87,182,255,0.5);
+    box-shadow: 0 0 0 1px rgb(214, 116, 116);
 	cursor: pointer;
 }
 

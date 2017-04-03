@@ -8,6 +8,13 @@ Fiber.enhance_textarea = function(textarea, auto_height) {
 		}
 	}
 
+	var media_buttons = [];
+	if (DEBUG == true){
+		media_buttons = ['Image','fImage','Table', 'HorizontalRule'];
+	} else {
+		media_buttons = ['Image','Table', 'HorizontalRule'];
+	}
+
 	window.CKEDITOR_CONFIG_TOOLBAR = window.CKEDITOR_CONFIG_TOOLBAR || [
 		['Format'],
 		window.CKEDITOR_CONFIG_STYLES_SET ? ['Styles'] : '-',
@@ -15,7 +22,7 @@ Fiber.enhance_textarea = function(textarea, auto_height) {
 		[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ],
 		['NumberedList','BulletedList','Outdent','Indent'],
 		['fPageLink','fFileLink','fImageLink','fCustomLink','fUnlink'],
-		['Image','fImage','Table', 'HorizontalRule'],
+		media_buttons,
 		['Maximize'],
 		['Source']
 	];

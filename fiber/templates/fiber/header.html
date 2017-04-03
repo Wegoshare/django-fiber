@@ -11,6 +11,7 @@
 	var BACKEND_BASE_URL = '{{ BACKEND_BASE_URL }}';
 	var LOGIN_PAGE_URL = '{{ LOGIN_PAGE_URL }}';
 	var FIBER_LOGIN_URL = '{{ FIBER_LOGIN_URL }}';
+    var DEBUG = {% if DEBUG %} true {% else %} false {% endif %};
 </script>
 
 {% compress js %}

@@ -9,6 +9,7 @@ from django.template import loader, RequestContext
 from django.utils.encoding import smart_text
 from django.utils.html import escape
 from django.http import HttpResponseRedirect
+from django.conf import settings
 
 from fiber.app_settings import LOGIN_STRING, EXCLUDE_URLS, EDITOR, PERMISSION_CLASS
 from fiber.models import ContentItem, Page
@@ -137,6 +138,7 @@ class AdminPageMiddleware(object):
             'BACKEND_BASE_URL': reverse('admin:index'),
             'LOGIN_PAGE_URL': reverse('admin:login'),
             'FIBER_LOGIN_URL': reverse('fiber_login'),
+            'DEBUG': settings.DEBUG
         }
         return loader.render_to_string('fiber/header.html', context, RequestContext(request))
 
