@@ -50,6 +50,9 @@ class ContentItem(models.Model):
                 contents = contents[:50] + '...'
             return contents or ugettext('[ EMPTY ]')  # TODO: find out why ugettext_lazy doesn't work here
 
+    def __module__(self):
+        return "ContentItem"
+
     @classmethod
     def get_add_url(cls):
         named_url = 'fiber_admin:%s_%s_add' % (cls._meta.app_label, cls._meta.object_name.lower())
@@ -105,6 +108,9 @@ class Page(MPTTModel):
 
     def __unicode__(self):
         return self.title
+
+    def __module__(self):
+        return "Page"
 
     def save(self, *args, **kwargs):
         if self.id:
