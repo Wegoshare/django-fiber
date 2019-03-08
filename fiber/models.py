@@ -34,6 +34,7 @@ class ContentItem(models.Model):
     metadata = JSONField(_('metadata'), blank=True, null=True, schema=METADATA_CONTENT_SCHEMA, prefill_from='fiber.models.ContentItem')
     template_name = models.CharField(_('template name'), blank=True, max_length=70)
     used_on_pages_data = JSONField(_('used on pages'), blank=True, null=True)
+    __module__ = "ContentItem"
 
     objects = load_class(CONTENT_ITEM_MANAGER)
 
@@ -50,8 +51,7 @@ class ContentItem(models.Model):
                 contents = contents[:50] + '...'
             return contents or ugettext('[ EMPTY ]')  # TODO: find out why ugettext_lazy doesn't work here
 
-    def __module__(self):
-        return "ContentItem"
+
 
     @classmethod
     def get_add_url(cls):
@@ -97,6 +97,7 @@ class Page(MPTTModel):
     protected = models.BooleanField(_('protected'), default=False)
     content_items = models.ManyToManyField(ContentItem, through='PageContentItem', verbose_name=_('content items'))
     metadata = JSONField(blank=True, null=True, schema=METADATA_PAGE_SCHEMA, prefill_from='fiber.models.Page')
+    __module__ = "Page"
 
     tree = TreeManager()
     objects = load_class(PAGE_MANAGER)
@@ -108,9 +109,6 @@ class Page(MPTTModel):
 
     def __unicode__(self):
         return self.title
-
-    def __module__(self):
-        return "Page"
 
     def save(self, *args, **kwargs):
         if self.id:
