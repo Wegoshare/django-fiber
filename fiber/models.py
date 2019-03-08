@@ -106,9 +106,6 @@ class Page(MPTTModel):
     def __unicode__(self):
         return self.title
 
-    def __module__(self):
-        return "Page"
-
     def save(self, *args, **kwargs):
         if self.id:
             old_url = Page.objects.get(id=self.id).get_absolute_url()
