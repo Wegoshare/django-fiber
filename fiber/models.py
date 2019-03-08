@@ -41,6 +41,7 @@ class ContentItem(models.Model):
     class Meta:
         verbose_name = _('content item')
         verbose_name_plural = _('content items')
+        app_label = 'content item'
 
     def __unicode__(self):
         if self.name:
@@ -106,6 +107,7 @@ class Page(MPTTModel):
         verbose_name = _('page')
         verbose_name_plural = _('pages')
         ordering = ('tree_id', 'lft')
+        app_label = 'page'
 
     def __unicode__(self):
         return self.title
